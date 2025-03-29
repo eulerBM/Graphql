@@ -1,5 +1,14 @@
 type Query {
     bookById(id: ID): Book
+    productById(id: Int): Product
+}
+
+type Product {
+    id: ID
+    name: String
+    description: String
+    price: Float
+
 }
 
 type Book {
