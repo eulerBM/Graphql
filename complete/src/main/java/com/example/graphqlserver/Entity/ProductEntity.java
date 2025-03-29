@@ -21,4 +21,12 @@ public class ProductEntity {
     @Column(nullable = false)
     private BigDecimal price;
 
+    public ProductEntity() {
+    }
+
+    public ProductEntity(String name, String description, Float price) {
+        this.name = name;
+        this.description = description;
+        this.price = BigDecimal.valueOf(price.longValue());
+    }
 }

@@ -2,16 +2,19 @@ package com.example.graphqlserver.Controller;
 
 import com.example.graphqlserver.Entity.ProductEntity;
 import com.example.graphqlserver.Repository.ProductRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.graphql.data.method.annotation.Argument;
+import org.springframework.graphql.data.method.annotation.MutationMapping;
 import org.springframework.graphql.data.method.annotation.QueryMapping;
 import org.springframework.stereotype.Controller;
 
 @Controller
 public class ProductController {
 
-    @Autowired
-    private ProductRepository productRepository;
+    private final ProductRepository productRepository;
+
+    public ProductController(ProductRepository productRepository) {
+        this.productRepository = productRepository;
+    }
 
     @QueryMapping
     public ProductEntity productById(@Argument long id){
@@ -26,5 +29,11 @@ public class ProductController {
 
     }
 
+    @MutationMapping
+    public ProductEntity createProduct(@Argument String name, @Argument String description, @Argument Float price){
+        
+        ProductEntity productEntity = new ProductEntity(name, description, price);
 
+        return productRepository.save(productEntity);
+    }
 }
