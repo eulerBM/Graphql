@@ -1,9 +1,10 @@
 type Query {
-    productById(id: Int): Product
+    productById(id: Int!): Product
 }
 
 type Mutation {
     createProduct(name: String, description: String, price: Float): Product
+    deleteProduct(id: Int!): Boolean
 }
 
 type Product {

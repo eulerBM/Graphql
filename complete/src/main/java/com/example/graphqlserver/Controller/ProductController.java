@@ -31,9 +31,23 @@ public class ProductController {
 
     @MutationMapping
     public ProductEntity createProduct(@Argument String name, @Argument String description, @Argument Float price){
-        
+
         ProductEntity productEntity = new ProductEntity(name, description, price);
 
         return productRepository.save(productEntity);
+    }
+
+    @MutationMapping
+    public Boolean deleteProduct(@Argument long id){
+
+        var getProductById = this.productRepository.findById(id);
+
+        if (getProductById.isPresent()){
+
+            this.productRepository.deleteById(id);
+            return true;
+        }
+
+        return false;
     }
 }
