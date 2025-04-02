@@ -7,7 +7,8 @@ import org.springframework.graphql.data.method.annotation.MutationMapping;
 import org.springframework.graphql.data.method.annotation.QueryMapping;
 import org.springframework.stereotype.Controller;
 
-import java.math.BigDecimal;
+import java.util.Collections;
+import java.util.List;
 
 @Controller
 public class ProductController {
@@ -28,6 +29,20 @@ public class ProductController {
         }
 
         throw new RuntimeException("Nenhum produto com esse ID");
+
+    }
+
+    @QueryMapping
+    public List<ProductEntity> productByName(@Argument String name){
+
+        List<ProductEntity> getProductByName = this.productRepository.findByNameContainingIgnoreCase(name);
+
+        if (getProductByName.isEmpty()){
+
+            throw new RuntimeException("Nenhum nome encontrado");
+        }
+
+        return getProductByName;
 
     }
 
