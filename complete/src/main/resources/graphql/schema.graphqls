@@ -1,6 +1,5 @@
 type Query {
     productById(id: Int!): Product
-    productByName(name: String):[Product]
 }
 
 type Mutation {
