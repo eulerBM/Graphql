@@ -29,16 +29,4 @@ public class ProductEntity {
         this.description = description;
         this.price = BigDecimal.valueOf(price.longValue());
     }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public void setPrice(BigDecimal price) {
-        this.price = price;
-    }
 }

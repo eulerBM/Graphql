@@ -53,30 +53,4 @@ public class ProductController {
         return false;
     }
 
-    @MutationMapping
-    public ProductEntity changeProduct(@Argument long id, @Argument String name, @Argument String description, @Argument Float price){
-
-        var getProductById = this.productRepository.findById(id);
-
-        if (getProductById.isPresent()){
-
-            var getProduct = getProductById.get();
-
-            if (!name.isBlank()){
-                getProduct.setName(name);
-            }
-            if (!description.isBlank()){
-                getProduct.setDescription(description);
-            }
-            if (price != null){
-                getProduct.setPrice(BigDecimal.valueOf(price.longValue()));
-            }
-
-            return this.productRepository.save(getProduct);
-        }
-
-        throw new RuntimeException("Produto não encontrado");
-
-    }
-
 }
