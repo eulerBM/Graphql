@@ -7,8 +7,9 @@ import org.springframework.graphql.data.method.annotation.MutationMapping;
 import org.springframework.graphql.data.method.annotation.QueryMapping;
 import org.springframework.stereotype.Controller;
 
-import java.util.Collections;
+import java.math.BigDecimal;
 import java.util.List;
+import java.util.Optional;
 
 @Controller
 public class ProductController {
@@ -66,6 +67,59 @@ public class ProductController {
         }
 
         return false;
+    }
+
+    @MutationMapping
+    public ProductEntity changeNameProduct(@Argument Long id, @Argument String name){
+
+        Optional<ProductEntity> getProductById = this.productRepository.findById(id);
+
+        if (getProductById.isEmpty()){
+            throw new RuntimeException("Product not found");
+        }
+
+        ProductEntity product = getProductById.get();
+
+        product.setName(name);
+
+        return this.productRepository.save(product);
+
+    }
+
+    @MutationMapping
+    public ProductEntity changeDescriptionProduct(@Argument Long id, @Argument String description){
+
+        Optional<ProductEntity> getProductById = this.productRepository.findById(id);
+
+        if (getProductById.isEmpty()){
+            throw new RuntimeException("Product not found");
+        }
+
+        ProductEntity product = getProductById.get();
+
+        product.setDescription(description);
+
+        return this.productRepository.save(product);
+
+    }
+
+    @MutationMapping
+    public ProductEntity changePriceProduct(@Argument Long id, @Argument Float price){
+
+        Optional<ProductEntity> getProductById = this.productRepository.findById(id);
+
+        if (getProductById.isEmpty()){
+
+            throw new RuntimeException("Product not found");
+
+        }
+
+        ProductEntity product = getProductById.get();
+
+        product.setPrice(new BigDecimal(price.longValue()));
+
+        return this.productRepository.save(product);
+
     }
 
 }

@@ -1,12 +1,14 @@
 type Query {
     productById(id: Int!): Product
-    productByName(name: String):[Product]
+    productByName(name: String!):[Product]
 }
 
 type Mutation {
-    createProduct(name: String, description: String, price: Float): Product
+    createProduct(name: String!, description: String!, price: Float!): Product
     deleteProduct(id: Int!): Boolean
-
+    changeNameProduct(id: Int!, name: String!): Product
+    changeDescriptionProduct(id: Int!, description: String!): Product
+    changePriceProduct(id: Int!, price: Float!): Product
 }
 
 type Product {
