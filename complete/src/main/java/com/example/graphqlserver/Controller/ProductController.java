@@ -1,6 +1,7 @@
 package com.example.graphqlserver.Controller;
 
 import com.example.graphqlserver.Entity.ProductEntity;
+import com.example.graphqlserver.Exception.ProductException;
 import com.example.graphqlserver.Repository.ProductRepository;
 import org.springframework.graphql.data.method.annotation.Argument;
 import org.springframework.graphql.data.method.annotation.MutationMapping;
@@ -23,24 +24,28 @@ public class ProductController {
     @QueryMapping
     public ProductEntity productById(@Argument long id){
 
-        var productGet = this.productRepository.findById(id);
+        ProductEntity productGet = this.productRepository.findById(id)
+                .orElseThrow(() -> new ProductException("Product with ID " + id + " not found"));
 
-        if (productGet.isPresent()){
-            return productGet.get();
-        }
-
-        throw new RuntimeException("Nenhum produto com esse ID");
+        return productGet;
 
     }
 
     @QueryMapping
     public List<ProductEntity> productByName(@Argument String name){
 
+        if (name.length() >= 100){
+
+            throw new ProductException("Nome menor ou maior que o taamnho aceito!");
+
+        }
+
         List<ProductEntity> getProductByName = this.productRepository.findByNameContainingIgnoreCase(name);
 
         if (getProductByName.isEmpty()){
 
-            throw new RuntimeException("Nenhum nome encontrado");
+            throw new ProductException("Nenhum nome encontrado");
+
         }
 
         return getProductByName;
@@ -50,6 +55,24 @@ public class ProductController {
     @MutationMapping
     public ProductEntity createProduct(@Argument String name, @Argument String description, @Argument Float price){
 
+        if (name.length() >= 100){
+
+            throw new ProductException("Nome menor ou maior que o taamnho aceito!");
+
+        }
+
+        if (description.length() >= 500 ){
+
+            throw new ProductException("Descrição menor ou maior que o tamanho aceito!");
+
+        }
+
+        if (price > 90000000.000){
+
+            throw new ProductException("Valor maior que o aceitavel!");
+
+        }
+
         ProductEntity productEntity = new ProductEntity(name, description, price);
 
         return productRepository.save(productEntity);
@@ -58,7 +81,13 @@ public class ProductController {
     @MutationMapping
     public Boolean deleteProduct(@Argument long id){
 
-        var getProductById = this.productRepository.findById(id);
+        if (id <= 0){
+
+            throw new ProductException("ID menor que zero!");
+
+        }
+
+        Optional<ProductEntity> getProductById = this.productRepository.findById(id);
 
         if (getProductById.isPresent()){
 
@@ -72,10 +101,24 @@ public class ProductController {
     @MutationMapping
     public ProductEntity changeNameProduct(@Argument Long id, @Argument String name){
 
+        if (name.length() >= 100){
+
+            throw new ProductException("Nome menor ou maior que o taamnho aceito!");
+
+        }
+
+        if (id <= 0){
+
+            throw new ProductException("ID menor que zero!");
+
+        }
+
         Optional<ProductEntity> getProductById = this.productRepository.findById(id);
 
         if (getProductById.isEmpty()){
-            throw new RuntimeException("Product not found");
+
+            throw new ProductException("Product not found");
+
         }
 
         ProductEntity product = getProductById.get();
@@ -89,10 +132,24 @@ public class ProductController {
     @MutationMapping
     public ProductEntity changeDescriptionProduct(@Argument Long id, @Argument String description){
 
+        if (description.length() >= 500){
+
+            throw new ProductException("Nome menor ou maior que o taamnho aceito!");
+
+        }
+
+        if (id <= 0){
+
+            throw new ProductException("ID menor que zero!");
+
+        }
+
         Optional<ProductEntity> getProductById = this.productRepository.findById(id);
 
         if (getProductById.isEmpty()){
-            throw new RuntimeException("Product not found");
+
+            throw new ProductException("Product not found");
+
         }
 
         ProductEntity product = getProductById.get();
@@ -105,6 +162,12 @@ public class ProductController {
 
     @MutationMapping
     public ProductEntity changePriceProduct(@Argument Long id, @Argument Float price){
+
+        if (id <= 0){
+
+            throw new ProductException("ID menor que zero!");
+
+        }
 
         Optional<ProductEntity> getProductById = this.productRepository.findById(id);
 
