@@ -7,6 +7,7 @@
 
 You will build a service that will accept GraphQL requests at `http://localhost:8080/graphql`.
 
+
 === Prerequisites
 Before running the project, ensure you have the following installed:
 
