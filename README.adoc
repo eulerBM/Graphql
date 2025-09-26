@@ -2,7 +2,7 @@
 :project_id: gs-graphql-server
 :icons: font
 :source-highlighter: prettify
-
+ 
 == How to Run This Project
 
 You will build a service that will accept GraphQL requests at `http://localhost:8080/graphql`.
